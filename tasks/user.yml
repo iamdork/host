@@ -42,7 +42,17 @@
 - authorized_key:
     user: "{{name}}"
     key: "{{key}}"
-    state: {% if blocked %}absent{% else %}preset{% endif%}
+    state: present
+  when: not blocked
+  with_items: "{{public_keys}}"
+  loop_control:
+    loop_var: key
+
+- authorized_key:
+    user: "{{name}}"
+    key: "{{key}}"
+    state: absent
+  when: blocked
   with_items: "{{public_keys}}"
   loop_control:
     loop_var: key
