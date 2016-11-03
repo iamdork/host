@@ -33,10 +33,12 @@
 - shell: id --user dork
   register: dork_user
   when: subuid.stat.exists and subgid.stat.exists
+  changed_when: no
 
 - shell: id --group dork
   register: dork_group
   when: subuid.stat.exists and subgid.stat.exists
+  changed_when: no
   
 - copy:
     src: userns.conf
