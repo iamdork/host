@@ -39,13 +39,10 @@
     force: no
     dest: /home/{{name}}/.vimrc.local
 
-- file:
-    path: /home/{{name}}/.ssh/authorized_keys
-    state: absent
-
 - authorized_key:
     user: "{{name}}"
     key: "{{key}}"
+    state: {% if blocked %}absent{% else %}preset{% endif%}
   with_items: "{{public_keys}}"
   loop_control:
     loop_var: key
