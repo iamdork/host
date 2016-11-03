@@ -1,12 +1,5 @@
 ---
-- hosts: test
-  gather_facts: no
-  pre_tasks:
-  - raw: yum install python -y
-    ignore_errors: yes
-  - raw: apt-get install python -y
-    ignore_errors: yes
-  - setup:
+- hosts: all
   roles:
-    - role: ansible-dork-host
+    - role: role_under_test
       users: "{{playbook_dir}}/users"
