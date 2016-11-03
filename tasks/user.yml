@@ -1,54 +1,52 @@
-- include_vars:
-    file: "{{file}}"
-    name: user
+- include_vars: "{{file}}"
 
 - user:
-    name: "{{user.name}}"
+    name: "{{name}}"
     groups: dork,docker
     shell: /bin/zsh
 
 - name: Install oh-my-zsh
   git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
-    dest: /home/{{user.name}}/.oh-my-zsh
-  become_user: "{{user.name}}"
+    dest: /home/{{name}}/.oh-my-zsh
+  become_user: "{{name}}"
 
 - name: Install .zshrc
   template:
     src: dot_zshrc.j2
-    dest: /home/{{user.name}}/.zshrc
-  become_user: "{{user.name}}"
+    dest: /home/{{name}}/.zshrc
+  become_user: "{{name}}"
 
 - copy:
     src: dot_zshrc.local
     force: no
-    dest: /home/{{user.name}}/.zshrc.local
+    dest: /home/{{name}}/.zshrc.local
 
 - name: Install amix/vimrc
   git:
     repo: https://github.com/amix/vimrc.git
-    dest: /home/{{user.name}}/.vim_runtime
-  become_user: "{{user.name}}"
+    dest: /home/{{name}}/.vim_runtime
+  become_user: "{{name}}"
 
 - name: Install .vimrc
   template:
     src: dot_vimrc.j2
-    dest: /home/{{user.name}}/.vimrc
-  become_user: "{{user.name}}"
+    dest: /home/{{name}}/.vimrc
+  become_user: "{{name}}"
 
 - copy:
     src: dot_vimrc.local
     force: no
-    dest: /home/{{user.name}}/.vimrc.local
+    dest: /home/{{name}}/.vimrc.local
 
 - file:
-    path: /home/{{user.name}}/.ssh/authorized_keys
+    path: /home/{{name}}/.ssh/authorized_keys
     state: absent
 
 - authorized_key:
-    user: "{{user.name}}"
+    user: "{{name}}"
     key: "{{key}}"
-  with_items: "{{user.public_keys}}"
+  with_items: "{{public_keys}}"
   loop_control:
     loop_var: key
 
