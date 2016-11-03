@@ -43,7 +43,7 @@
     user: "{{name}}"
     key: "{{key}}"
     state: present
-  when: not blocked
+  when: blocked is not defined or not blocked
   with_items: "{{public_keys}}"
   loop_control:
     loop_var: key
@@ -52,7 +52,7 @@
     user: "{{name}}"
     key: "{{key}}"
     state: absent
-  when: blocked
+  when: blocked is defined and blocked
   with_items: "{{public_keys}}"
   loop_control:
     loop_var: key
