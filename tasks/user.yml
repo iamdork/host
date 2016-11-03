@@ -1,0 +1,56 @@
+- include_vars:
+    file: "{{file}}"
+    name: user
+
+- user:
+    name: "{{user.name}}"
+    groups: dork,docker
+    shell: /bin/zsh
+
+- name: Install oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: /home/{{user.name}}/.oh-my-zsh
+  become_user: "{{user.name}}"
+
+- name: Install .zshrc
+  template:
+    src: dot_zshrc.j2
+    dest: /home/{{user.name}}/.zshrc
+  become_user: "{{user.name}}"
+
+- copy:
+    src: dot_zshrc.local
+    force: no
+    dest: /home/{{user.name}}/.zshrc.local
+
+- name: Install amix/vimrc
+  git:
+    repo: https://github.com/amix/vimrc.git
+    dest: /home/{{user.name}}/.vim_runtime
+  become_user: "{{user.name}}"
+
+- name: Install .vimrc
+  template:
+    src: dot_vimrc.j2
+    dest: /home/{{user.name}}/.vimrc
+  become_user: "{{user.name}}"
+
+- copy:
+    src: dot_vimrc.local
+    force: no
+    dest: /home/{{user.name}}/.vimrc.local
+
+- file:
+    path: /home/{{user.name}}/.ssh/authorized_keys
+    state: absent
+
+- authorized_key:
+    user: "{{user.name}}"
+    key: "{{key}}"
+  with_items: "{{user.public_keys}}"
+  loop_control:
+    loop_var: key
+
+
+

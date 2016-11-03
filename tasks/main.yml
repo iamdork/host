@@ -1,0 +1,10 @@
+- name: Configure host system
+  include: system.yml
+  tags: system
+
+- name: Load and apply users
+  include: user.yml
+  vars:
+    file: "{{item}}"
+  with_fileglob: "{{users}}/*"
+  tags: users

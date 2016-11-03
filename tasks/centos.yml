@@ -1,0 +1,21 @@
+- yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+- yum_repository:
+    name: docker
+    description: Docker Repository
+    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: https://yum.dockerproject.org/gpg
+
+- yum:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+  - python-pip
+  - docker-engine
+  - zsh
+  - vim
+  - git
+  - curl

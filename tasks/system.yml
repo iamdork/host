@@ -1,0 +1,58 @@
+- include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include: centos.yml
+  when: ansible_distribution == 'CentOS'
+
+
+- file:
+    path: /etc/systemd/system/docker.service.d/userns.conf
+    state: directory
+
+- pip:
+    name: dork-compose
+    state: latest
+
+- group:
+    name: "{{item}}"
+  with_items:
+  - dork
+
+- user:
+    name: dork
+    group: dork
+    system: yes
+
+- stat:
+    path: /etc/subuid
+  register: subuid
+
+- stat:
+    path: /etc/subgid
+  register: subgid
+
+- shell: id --user dork
+  register: dork_user
+  when: subuid.stat.exists and subgid.stat.exists
+
+- shell: id --group dork
+  register: dork_group
+  when: subuid.stat.exists and subgid.stat.exists
+  
+- copy:
+    src: userns.conf
+    dest: /etc/systemd/system/docker.service.d/userns.conf
+  notify: restart docker service
+  when: subuid.stat.exists and subgid.stat.exists
+
+- lineinfile:
+    dest: /etc/subuid
+    line: "dork:{{dork_user.stdout}}:65536"
+  notify: restart docker service
+  when: subuid.stat.exists and subgid.stat.exists
+
+- lineinfile:
+    dest: /etc/subgid
+    line: "dork:{{dork_group.stdout}}:65536"
+  notify: restart docker service
+  when: subuid.stat.exists and subgid.stat.exists

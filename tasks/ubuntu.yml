@@ -1,0 +1,24 @@
+- apt:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+  - apt-transport-https
+  - ca-certificates
+    
+- apt_key:
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+
+- apt_repository:
+    repo: "deb https://apt.dockerproject.org/repo ubuntu-xenial main"
+
+- apt:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+  - python-pip
+  - docker-engine
+  - zsh
+  - vim
+  - git
+  - curl
