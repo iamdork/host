@@ -1,1 +1,14 @@
+galaxy_info:
+  author: Philipp Melab
+  description: Dork development host setup
+  company: iamdork
+  license: MIT
+  min_ansible_version: 2.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+  - name: CentOS
+    versions:
+    - 7
 dependencies: []
