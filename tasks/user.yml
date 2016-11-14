@@ -11,15 +11,23 @@
     dest: /home/{{name}}/.oh-my-zsh
   become_user: "{{name}}"
 
+- file:
+    owner: "{{name}}"
+    group: "{{name}}"
+    recurse: yes
+    path: /home/{{name}}/.oh-my-zsh
+
 - name: Install .zshrc
   template:
     src: dot_zshrc.j2
     dest: /home/{{name}}/.zshrc
+    owner: "{{name}}"
   become_user: "{{name}}"
 
 - copy:
     src: dot_zshrc.local
     force: no
+    owner: "{{name}}"
     dest: /home/{{name}}/.zshrc.local
 
 - name: Install amix/vimrc
@@ -27,6 +35,12 @@
     repo: https://github.com/amix/vimrc.git
     dest: /home/{{name}}/.vim_runtime
   become_user: "{{name}}"
+
+- file:
+    owner: "{{name}}"
+    group: "{{name}}"
+    recurse: yes
+    path: /home/{{name}}/.vim_runtime
 
 - name: Install .vimrc
   template:

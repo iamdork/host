@@ -1,13 +1,12 @@
-set runtimepath+=/opt/vim_runtime
+set runtimepath+=~/.vim_runtime
 
-source /opt/vim_runtime/vimrcs/basic.vim
-source /opt/vim_runtime/vimrcs/filetypes.vim
-source /opt/vim_runtime/vimrcs/plugins_config.vim
-source /opt/vim_runtime/vimrcs/extended.vim
+source ~/.vim_runtime/vimrcs/basic.vim
+source ~/.vim_runtime/vimrcs/filetypes.vim
+source ~/.vim_runtime/vimrcs/plugins_config.vim
+source ~/.vim_runtime/vimrcs/extended.vim
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Overrides                                                          "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set shiftwidth=2
-set tabstop=2
-colorscheme slate
+try
+source ~/.vimrc.local
+catch
+endtry
+
